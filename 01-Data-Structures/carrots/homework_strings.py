@@ -35,15 +35,19 @@ P.S. За незакрытый файловый дескриптор - кара�
 
 
 def translate_from_dna_to_rna(dna):
+    with open("./out/dna_to_rna.txt", "w") as dna_to_rna:
+        for line in dna:
+            if '>' in line:
+                dna_to_rna.write(line)
+            else:
+                dna_to_rna.write(line.replace('T', 'U'))
     
-    """your code here"""
-    
-    return rna
+    #return rna
 
 
 def count_nucleotides(dna):
 	
-	count_nucl = open('./out/count_nucl', 'w')
+	count_nucl = open('./out/count_nucl.txt', 'w')
 	num_of_nucleotides = {}
 	for line in dna:
 		if '>' in line:
@@ -76,3 +80,6 @@ def translate_rna_to_protein(rna):
 # read the file dna.fasta
 with open('./files/dna.fasta') as dna:
 	count_nucleotides(dna)
+
+with open('./files/dna.fasta') as dna:
+	translate_from_dna_to_rna(dna)
