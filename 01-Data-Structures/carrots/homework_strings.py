@@ -33,9 +33,6 @@ P.S. За незакрытый файловый дескриптор - кара�
 
 """
 
-# read the file dna.fasta
-dna = None
-
 
 def translate_from_dna_to_rna(dna):
     
@@ -45,10 +42,28 @@ def translate_from_dna_to_rna(dna):
 
 
 def count_nucleotides(dna):
-    
-    """your code here"""
-    
-    return num_of_nucleotides
+	
+	count_nucl = open('./out/count_nucl', 'w')
+	num_of_nucleotides = {}
+	for line in dna:
+		if '>' in line:
+			if len(num_of_nucleotides) != 0:
+				count_nucl.write(str(num_of_nucleotides)+'\n')
+			num_of_nucleotides.clear()
+			count_nucl.write(line)
+			continue
+		for nukleot in line:
+			if nukleot == '\n':
+				continue
+			if nukleot in num_of_nucleotides:
+				num_of_nucleotides[nukleot] += 1
+			else:
+				num_of_nucleotides[nukleot] = 1
+				
+	if len(num_of_nucleotides) != 0:
+				count_nucl.write(str(num_of_nucleotides)+'\n')
+	count_nucl.close()
+	#return num_of_nucleotides
 
 
 def translate_rna_to_protein(rna):
@@ -56,3 +71,8 @@ def translate_rna_to_protein(rna):
     """your code here"""
     
     return protein
+	
+	
+# read the file dna.fasta
+with open('./files/dna.fasta') as dna:
+	count_nucleotides(dna)
