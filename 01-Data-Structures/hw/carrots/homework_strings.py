@@ -68,23 +68,23 @@ def count_nucleotides(dna):
 
 
 def translate_rna_to_protein(rna):
-	stk = ''
-	prot = ['','']
+	codon = {}
 	f = open("./files/rna_codon_table.txt")
 	for line in f:
-		stk += line
+		for i in range(0, len(line.split()), 2):
+			codon[line.split()[i]] = line.split()[i + 1]
+	#print(codon)
 	f.close()
-	for j in range(0,len(rna)):
-		i = 0
-		while i < len(rna[j])-3:
-			index = stk.find(rna[j][i:i+3])
-			prot[j] += stk[index+4]
-			i += 3
-	protein = open('prot.txt', 'w')
-	protein.write(str(prot))
+	protein = open('prottttt.txt', 'w')
+	for i in range(len(rna)):
+	    #print('IIIII',i)
+	    for j in range(0, len(rna[i]), 3):
+	        #print('JJJJJ',j)
+	        if rna[i][j:j+3] not in codon:
+	            continue
+	        protein.write(codon[rna[i][j:j+3]])
 	protein.close()
-	return prot
-	
+			
 
 with open('./files/dna.fasta') as dna:
 	count_nucleotides(dna)
@@ -92,5 +92,6 @@ with open('./files/dna.fasta') as dna:
 
 with open('./files/dna.fasta') as dna:
 	rna = translate_from_dna_to_rna(dna)
+	#print(rna)
 	prot = translate_rna_to_protein(rna)
-	print('PROTEIN', prot)
+	#print('PROTEIN', prot)
