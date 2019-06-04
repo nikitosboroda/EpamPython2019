@@ -36,50 +36,61 @@ P.S. За незакрытый файловый дескриптор - кара�
 
 def translate_from_dna_to_rna(dna):
     with open("./out/dna_to_rna.txt", "w") as dna_to_rna:
+        rna = []
+        stk = ''
         for line in dna:
             if '>' in line:
+                rna.append(stk.replace('\n', ''))
+                stk = ''
                 dna_to_rna.write(line)
             else:
+                stk += line.replace('T', 'U')
                 dna_to_rna.write(line.replace('T', 'U'))
-    
-    #return rna
+        rna.append(stk.replace('\n', ''))
+    rna.pop(0)
+    return rna
 
 
 def count_nucleotides(dna):
-	
-	count_nucl = open('./out/count_nucl.txt', 'w')
-	num_of_nucleotides = {}
+	count_nucl = open('./out/count_nucl1.txt', 'w')
+	num_of_nucleotides = {i: 0 for i in 'ACGT'}
 	for line in dna:
-		if '>' in line:
-			if len(num_of_nucleotides) != 0:
+		if line.startswith('>'):
+			if num_of_nucleotides['A'] != 0:
 				count_nucl.write(str(num_of_nucleotides)+'\n')
-			num_of_nucleotides.clear()
+			num_of_nucleotides = {i: 0 for i in 'ACGT'}
 			count_nucl.write(line)
 			continue
-		for nukleot in line:
-			if nukleot == '\n':
-				continue
-			if nukleot in num_of_nucleotides:
-				num_of_nucleotides[nukleot] += 1
-			else:
-				num_of_nucleotides[nukleot] = 1
-				
-	if len(num_of_nucleotides) != 0:
-				count_nucl.write(str(num_of_nucleotides)+'\n')
+		for sym in 'ACGT':
+			num_of_nucleotides[sym] += line.count(sym)
+	count_nucl.write(str(num_of_nucleotides)+'\n')
 	count_nucl.close()
-	#return num_of_nucleotides
 
 
 def translate_rna_to_protein(rna):
-    
-    """your code here"""
-    
-    return protein
+	stk = ''
+	prot = ['','']
+	f = open("./files/rna_codon_table.txt")
+	for line in f:
+		stk += line
+	f.close()
+	for j in range(0,len(rna)):
+		i = 0
+		while i < len(rna[j])-3:
+			index = stk.find(rna[j][i:i+3])
+			prot[j] += stk[index+4]
+			i += 3
+	protein = open('prot.txt', 'w')
+	protein.write(str(prot))
+	protein.close()
+	return prot
 	
-	
-# read the file dna.fasta
+
 with open('./files/dna.fasta') as dna:
 	count_nucleotides(dna)
 
+
 with open('./files/dna.fasta') as dna:
-	translate_from_dna_to_rna(dna)
+	rna = translate_from_dna_to_rna(dna)
+	prot = translate_rna_to_protein(rna)
+	print('PROTEIN', prot)
