@@ -75,6 +75,9 @@ def translate_rna_to_protein(rna):
 			codon[line.split()[i]] = line.split()[i + 1]
 	#print(codon)
 	f.close()
+	for cod in codon:
+	    if codon[cod] == "Stop"
+	        codon[cod] = 'S'
 	protein = open('prottttt.txt', 'w')
 	for i in range(len(rna)):
 	    #print('IIIII',i)
@@ -84,7 +87,7 @@ def translate_rna_to_protein(rna):
 	            continue
 	        protein.write(codon[rna[i][j:j+3]])
 	protein.close()
-			
+	
 
 with open('./files/dna.fasta') as dna:
 	count_nucleotides(dna)
