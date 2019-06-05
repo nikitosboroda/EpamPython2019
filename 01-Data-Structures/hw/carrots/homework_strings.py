@@ -52,49 +52,49 @@ def translate_from_dna_to_rna(dna):
 
 
 def count_nucleotides(dna):
-	count_nucl = open('./out/count_nucl1.txt', 'w')
-	num_of_nucleotides = {i: 0 for i in 'ACGT'}
-	for line in dna:
-		if line.startswith('>'):
-			if num_of_nucleotides['A'] != 0:
-				count_nucl.write(str(num_of_nucleotides)+'\n')
-			num_of_nucleotides = {i: 0 for i in 'ACGT'}
-			count_nucl.write(line)
-			continue
-		for sym in 'ACGT':
-			num_of_nucleotides[sym] += line.count(sym)
-	count_nucl.write(str(num_of_nucleotides)+'\n')
-	count_nucl.close()
+    count_nucl = open('./out/count_nucl1.txt', 'w')
+    num_of_nucleotides = {i: 0 for i in 'ACGT'}
+    for line in dna:
+        if line.startswith('>'):
+            if num_of_nucleotides['A'] != 0:
+                count_nucl.write(str(num_of_nucleotides)+'\n')
+            num_of_nucleotides = {i: 0 for i in 'ACGT'}
+            count_nucl.write(line)
+            continue
+        for sym in 'ACGT':
+            num_of_nucleotides[sym] += line.count(sym)
+    count_nucl.write(str(num_of_nucleotides)+'\n')
+    count_nucl.close()
 
 
 def translate_rna_to_protein(rna):
-	codon = {}
-	f = open("./files/rna_codon_table.txt")
-	for line in f:
-		for i in range(0, len(line.split()), 2):
-			codon[line.split()[i]] = line.split()[i + 1]
-	#print(codon)
-	f.close()
-	for cod in codon:
-	    if codon[cod] == "Stop"
-	        codon[cod] = 'S'
-	protein = open('prottttt.txt', 'w')
-	for i in range(len(rna)):
-	    #print('IIIII',i)
-	    for j in range(0, len(rna[i]), 3):
-	        #print('JJJJJ',j)
-	        if rna[i][j:j+3] not in codon:
-	            continue
-	        protein.write(codon[rna[i][j:j+3]])
-	protein.close()
-	
-
-with open('./files/dna.fasta') as dna:
-	count_nucleotides(dna)
+    codon = {}
+    f = open("./files/rna_codon_table.txt")
+    for line in f:
+        for i in range(0, len(line.split()), 2):
+            codon[line.split()[i]] = line.split()[i + 1]
+    # print(codon)
+    f.close()
+    for cod in codon:
+        if codon[cod] == "Stop":
+            codon[cod] = 'S'
+    protein = open('prottttt.txt', 'w')
+    for i in range(len(rna)):
+        # print('IIIII',i)
+        for j in range(0, len(rna[i]), 3):
+            # print('JJJJJ',j)
+            if rna[i][j:j+3] not in codon:
+                continue
+            protein.write(codon[rna[i][j:j+3]])
+    protein.close()
 
 
 with open('./files/dna.fasta') as dna:
-	rna = translate_from_dna_to_rna(dna)
-	#print(rna)
-	prot = translate_rna_to_protein(rna)
-	#print('PROTEIN', prot)
+    count_nucleotides(dna)
+
+
+with open('./files/dna.fasta') as dna:
+    rna = translate_from_dna_to_rna(dna)
+    # print(rna)
+    # prot = translate_rna_to_protein(rna)
+    #print('PROTEIN', prot)
