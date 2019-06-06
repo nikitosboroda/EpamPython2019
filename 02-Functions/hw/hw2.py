@@ -9,10 +9,10 @@ def atom(val=None):
         return val
 
     def process_value(*args):
-        x = []
+        nonlocal val
         for i in args:
-            x.append(i())
-        return x
+            val = i()
+        return val
 
     def delete_value(direct):
         while direct:
