@@ -8,21 +8,22 @@ def make_cache(sec=10):
 
     def decorator(func):
         @functools.wraps(func)
-        def inner(*args, **kwargs):
+        def inner(*args):
             strt = time.time()
-            key = (args, kwargs) if args and kwargs else (args,)
+            key = args
             if key in func_result:
                 if strt - func_result[key][1] > sec:
                     func_result.pop(key)
             else:
-                result = func(*args, **kwargs)
+                result = func(*args)
                 func_result[key] = (result, time.time())
+            return result
         return inner
     return decorator
 
 
 @make_cache(10)
-def slow_function(a, b, c):
+def slow_function(a, b, c, *args):
     """Unknown function"""
     print(slow_function.__doc__)
     print(slow_function.__name__)
@@ -30,7 +31,6 @@ def slow_function(a, b, c):
 
 
 if __name__ == '__main__':
-    #print("RES:", func_result)
-    slow_function(4, 5, 16)
+    slow_function(4, 5, 16, 33, 3423)
+    print(dir(make_cache))
     slow_function(3, 4, 5)
-    #print("RES:", func_result)
