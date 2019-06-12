@@ -27,6 +27,7 @@ def slow_function(a, b, c, *args):
     """Unknown function"""
     print(slow_function.__doc__)
     print(slow_function.__name__)
+    print(args)
     return "Прямоугольный треугольник" if a ** 2 + b ** 2 == c ** 2 else "Не прямоугольный"
 
 
