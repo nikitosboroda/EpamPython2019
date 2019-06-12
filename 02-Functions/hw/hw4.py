@@ -15,7 +15,7 @@ def modified_func(func, *fixated_args, **fixated_kwargs):
     # print(new_func.__name__)
     mass = []
     str = ''
-    doc = 'None'
+    doc = ''
     if fixated_args:
         for i in args:
             mass.append(i)
