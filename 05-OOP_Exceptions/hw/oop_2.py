@@ -91,7 +91,7 @@ class Teacher(Person):
 
 class Student(Person):
     def do_homework(self, hw_object, solution):
-        if hw_object._Homework__is_active():
+        if hw_object.is_active():
             return HomeworkResult(self, hw_object, solution)
         raise DeadlineError('You are late')
 
@@ -102,7 +102,7 @@ class Homework:
         self.created = datetime.datetime.now()
         self.deadline = datetime.timedelta(days=days)
 
-    def __is_active(self) -> bool:
+    def is_active(self) -> bool:
         return self.deadline.days > 0
 
 

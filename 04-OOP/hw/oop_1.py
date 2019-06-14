@@ -47,7 +47,7 @@ class Student:
 
     @staticmethod
     def do_homework(hw_object):
-        if hw_object._Homework__is_active():
+        if hw_object.is_active():
             return hw_object
         print("You are late")
 
@@ -68,7 +68,7 @@ class Homework:
         self.created = datetime.datetime.now()
         self.deadline = datetime.timedelta(days=days)
 
-    def __is_active(self):
+    def is_active(self):
         return self.deadline.days > 0
 
 

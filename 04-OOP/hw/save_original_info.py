@@ -21,7 +21,6 @@ import functools
 
 def save_func_info(old_func):
     def decorator(func):
-        @functools.wraps(func)
         def inner(*args, **kwargs):
             inner.__name__ = old_func.__name__
             inner.__doc__ = old_func.__doc__
