@@ -71,20 +71,21 @@ class Teacher(Person):
         return Homework(hw_text, days_for_task)
 
     @classmethod
-    def check_homework(cls, hw_res_obj: object) -> bool:
+    def check_homework(cls, hw_res_obj) -> bool:
         if len(hw_res_obj.solution) >= 5:
             if hw_res_obj.solution not in cls.homework_done:
-                cls.homework_done[hw_res_obj.homework][hw_res_obj.solution] = hw_res_obj
+                cls.homework_done[hw_res_obj.homework][hw_res_obj.solution] =\
+                    hw_res_obj
                 return True
         return False
 
     @classmethod
     def reset_results(cls, hw_obj=None) -> None:
         if hw_obj:
-            try:
+            if hw_obj in cls.homework_done:
                 del cls.homework_done[hw_obj]
-            except Exception as e:
-                print('mb Homework already not in dict', e)
+            else:
+                print("HW doesn't exist")
         else:
             cls.homework_done.clear()
 
@@ -103,11 +104,11 @@ class Homework:
         self.deadline = datetime.timedelta(days=days)
 
     def is_active(self) -> bool:
-        return self.deadline.days > 0
+        return (datetime.datetime.now() - self.created) < self.deadline
 
 
 class HomeworkResult:
-    def __init__(self, author: object, task: object, solution: str):
+    def __init__(self, author, task, solution: str):
         self.author = author
         self.created = datetime.datetime.now()
         self.solution = solution
@@ -117,7 +118,8 @@ class HomeworkResult:
             raise TypeError('You gave a not Homework object')
 
     def __str__(self):
-        return f"Student {self.author} gave his solution: {self.solution} , at {self.created} o'clock"
+        return f"Student {self.author} gave his " \
+               f"solution: {self.solution} , at {self.created} o'clock"
 
 
 if __name__ == '__main__':

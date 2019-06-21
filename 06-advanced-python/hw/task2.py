@@ -28,7 +28,7 @@ class Graph:
         else:
             raise StopIteration
 
-
-# E = {'A': ['B', 'D'], 'B': ['C'], 'C': ['E', 'F'], 'D': ['A'], 'E': ['D'], 'F': []}
-# graph = Graph(E)
+E = {'A': ['B', 'D'], 'B': ['C'], 'C': ['E', 'F'], 'D': ['A'], 'E': ['D'], 'F': []}
+graph = Graph(E)
+print([f'{a}  {b}' for a in graph for b in graph])
 
