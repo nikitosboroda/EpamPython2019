@@ -1,0 +1,10 @@
+tag Длиннопост occurs 41 times;
+tag Путешествия occurs 39 times;
+tag Политика occurs 39 times;
+tag Видео occurs 17 times;
+tag Текст occurs 14 times;
+tag Полиция occurs 14 times;
+tag Россия occurs 12 times;
+tag Фотография occurs 11 times;
+tag Туризм occurs 10 times;
+tag Украина occurs 8 times;

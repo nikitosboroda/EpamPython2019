@@ -5,11 +5,9 @@ import tkinter
 
 def receive():
     """Обработка входящих сообщений"""
-    while True:  # бесконечный цикл т.к. мы получаем сообщения
-        # независимо от наших
+    while True:  # бесконечный цикл т.к. мы получаем сообщения независимо от наших
         try:
-            msg = client_socket.recv(BUFSIZ).decode("utf8")  # чтение
-            #  данных из сокета
+            msg = client_socket.recv(BUFSIZ).decode("utf8")  # чтение данных из сокета
             msg_list.insert(tkinter.END, msg)
         except OSError:  # возможно пользователь покинул чат
             break
@@ -43,8 +41,7 @@ my_msg.set("Type your messages here.")
 scrollbar = tkinter.Scrollbar(messages_frame)  # Для перемещения по чату
 
 # создаем хранилище сообщений и запоняем его
-msg_list = tkinter.Listbox(messages_frame, height=15, width=50,
-                           yscrollcommand=scrollbar.set)
+msg_list = tkinter.Listbox(messages_frame, height=15, width=50, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
 msg_list.pack()
@@ -61,7 +58,7 @@ send_button.pack()
 top.protocol("WM_DELETE_WINDOW", on_closing)
 
 # подключение к серверу
-HOST = input('Enter host: ')  # localhost
+HOST = input('Enter host: ') # localhost
 PORT = input('Enter port: ')
 if not PORT:
     PORT = 33000

@@ -5,25 +5,34 @@ from threading import Thread
 
 
 def accept_incoming_connections():
-    """Sets up handling for incoming clients."""
+    """Принимаем подкдючение юзера,
+        приветствуем его."""
     while True:
-        client, client_address = SERVER.accept()
-        print("%s has connected." % client_address)
-        client.send(bytes("Greetings from the cave! Now type your name and press enter!", "utf8"))
-        addresses[client] = client_address
-        Thread(target=handle_client, args=(client,)).start()
+        client, client_address = SERVER.accept()  # возвращет сокет и адрес клиента.
+        # сокет используется для посылки клиенту данных
+        print(f"{client_address} has connected.")
+        client.send(bytes("Greetings from the cave!"
+                          "Now type your name and press enter!", "utf8"))
+        addresses[client] = client_address  # добавляем адрес киента в словарь
+        # для дальнейшей работы с ним
+        Thread(target=handle_client, args=(client,)).start()  # запускаем функцию
+        # handle_client в отдельном потоке
 
 
-def handle_client(client):  # Takes client socket as argument.
-    """Handles a single client connection."""
+def handle_client(client):  # сокет клиента - аргумент
+    """Обрабатывает одно клиентское соединение."""
 
-    name = client.recv(BUFSIZ).decode("utf8")
+    name = client.recv(BUFSIZ).decode("utf8")  # принимаем введенное
+    # имя пользователя
     welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
+    # приветствуем его
     client.send(bytes(welcome, "utf8"))
     msg = "%s has joined the chat!" % name
     broadcast(bytes(msg, "utf8"))
-    clients[client] = name
 
+    clients[client] = name
+    # ловим сообщения клиента, если оно не {quit}, то транслируем его
+    # остальным пользователям
     while True:
         msg = client.recv(BUFSIZ)
         if msg != bytes("{quit}", "utf8"):
@@ -36,8 +45,8 @@ def handle_client(client):  # Takes client socket as argument.
             break
 
 
-def broadcast(msg, prefix=""):  # prefix is for name identification.
-    """Broadcasts a message to all the clients."""
+def broadcast(msg, prefix=""):
+    """Транслирует сообщение всем пользователям"""
 
     for sock in clients:
         sock.send(bytes(prefix, "utf8") + msg)
@@ -45,7 +54,7 @@ def broadcast(msg, prefix=""):  # prefix is for name identification.
 
 clients = {}
 addresses = {}
-
+# задаем данные для сервера и запускаем его
 HOST = ''
 PORT = 33000
 BUFSIZ = 1024
@@ -55,9 +64,9 @@ SERVER = socket(AF_INET, SOCK_STREAM)
 SERVER.bind(ADDR)
 
 if __name__ == "__main__":
-    SERVER.listen(5)
+    SERVER.listen(5)  # включаем режим прослушивания, в очереди может быть максимум 5
     print("Waiting for connection...")
-    ACCEPT_THREAD = Thread(target=accept_incoming_connections)
+    ACCEPT_THREAD = Thread(target=accept_incoming_connections)  # запускаем функцию в отдельном потоке
     ACCEPT_THREAD.start()
-    ACCEPT_THREAD.join()
-    SERVER.close()
+    ACCEPT_THREAD.join()  # с помощью join() ждем пока поток закончит
+    SERVER.close()  # закрываем соединение
