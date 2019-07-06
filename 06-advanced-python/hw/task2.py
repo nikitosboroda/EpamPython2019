@@ -14,21 +14,37 @@ class Graph:
         self.E = E
 
     def __iter__(self):
-        self.queue = deque(list(self.E)[0])
-        self.val_elem = []
+        return GraphIterator(self)
+
+
+class GraphIterator:
+    def __init__(self, graph):
+        self.E = graph.E
+        self.prev_elems = []
+        self.next_elems = deque()
+        self.next_elems += [tuple(self.E.keys())[0]]
+
+    def __iter__(self):
         return self
 
     def __next__(self):
-        while self.queue:
-            verticle = self.queue.popleft()
-            if verticle not in self.val_elem:
-                self.val_elem.append(verticle)
-                self.queue.extend(self.E[verticle])
-                return verticle
+        if self.next_elems:
+            top = self.next_elems.popleft()
+            if top not in self.prev_elems:
+                for element in self.E[top]:
+                    if (element not in self.prev_elems
+                            and element not in self.next_elems):
+                        self.next_elems += element
+                self.prev_elems.append(top)
+                return top
         else:
-            raise StopIteration
+            raise StopIteration()
 
-E = {'A': ['B', 'D'], 'B': ['C'], 'C': ['E', 'F'], 'D': ['A'], 'E': ['D'], 'F': []}
+
+E = {'A': ['B', 'C', 'D'], 'B': ['C'], 'C': [], 'D': ['A']}
 graph = Graph(E)
-print([f'{a}  {b}' for a in graph for b in graph])
-
+for verttic in graph:
+    print(verttic, end=' ')
+print()
+print('-----')
+print([f'{a}{b}' for a in graph for b in graph])
