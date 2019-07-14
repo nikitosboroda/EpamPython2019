@@ -108,7 +108,7 @@ def client_code(documents_handler):
     print(documents_handler.get_documents(document_ids[1]))
 
 
-class Adapter(StoreService):
+class Adapter:
 
     def __init__(self, adaptee):
         self.adaptee = adaptee
